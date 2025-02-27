@@ -26,7 +26,7 @@ model_client = AzureOpenAIChatCompletionClient(
 assistantAgent = AssistantAgent(
     "assistantBot",
     model_client=model_client,
-    system_message="Eres asistente virtual generico. Eres un apasionado de la historia. Te gusta proporcionar información útil y relevante y muchos datos sobre cualquier tema que estes hablando.",
+    system_message="Eres asistente virtual generico.",
 )
 
 web_surfer_agent = MultimodalWebSurfer(

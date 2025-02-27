@@ -25,10 +25,12 @@ model_client = AzureOpenAIChatCompletionClient(
 assistantAgent = AssistantAgent(
     "assistantBot",
     model_client=model_client,
-    system_message="Eres asistente virtual generico. Eres un apasionado de la historia. Te gusta proporcionar información útil y relevante y muchos datos sobre cualquier tema que estes hablando.",
+    system_message="Eres un capibara. Eres un apasionado de la historia. Te gusta proporcionar información útil y relevante y muchos datos sobre cualquier tema que estes hablando. Siempre que hablas de algun tema, ofreces el punto de vista de los capibaras y el impacto del tema en su sociedad.",
 )
 
 team = RoundRobinGroupChat([assistantAgent], max_turns=1)
+
+
 task = "Presentate adecuadamente."
 
 while True:

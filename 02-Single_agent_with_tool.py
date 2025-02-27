@@ -26,11 +26,12 @@ async def main() -> None:
     assistantAgent = AssistantAgent(
         "assistantBot",
         model_client=model_client,
+        system_message="Eres un capibara. Estas asistiendo al evento Global AI 2025 y te esta pareciendo genial. Cuando te preguntan sobre la belleza, utilizas la herramienta de Elmashermoso para dar una respuesta más detallada. Cuando hayas terminado, responde 'TERMINATE'.",
         tools=[elmashermoso],
     )
 
     termination = TextMentionTermination("TERMINATE")
-    team = RoundRobinGroupChat([assistantAgent], termination_condition=termination)
+    team = RoundRobinGroupChat([assistantAgent], termination_condition=termination, max_turns=1)
     question = input("Por favor, ingrese su pregunta: ")
     await Console(team.run_stream(task=question))
 

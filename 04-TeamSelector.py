@@ -31,6 +31,14 @@ async def savestory(story:str, filename:str):
             'w', encoding='utf-8') as f:
         f.write(story)
 
+# Story Editor Agent.
+Story_editor = AssistantAgent(
+    "Story_editor",
+    model_client=az_model_client,
+    tools=[savestory],
+    system_message="Eres un asistente de inteligencia artificial útil que convierte la historia final en un archivo .txt",
+)
+
 # Create the Planning agent.
 
 
@@ -54,7 +62,7 @@ planning_agent = AssistantAgent(
         Al asignar tareas, usa este formato:
 
         <agente> : <tarea>
-        Cuando todas las tareas estén completas, finaliza con "TERMINAR".
+        Cuando todas las tareas estén completas, finaliza con "TERMINATE".
     """,
 )
 
@@ -88,7 +96,7 @@ Story_editor = AssistantAgent(
 )
 
 text_mention_termination = TextMentionTermination("TERMINATE")
-max_messages_termination = MaxMessageTermination(max_messages=10)
+max_messages_termination = MaxMessageTermination(max_messages=15)
 termination = text_mention_termination | max_messages_termination
 
 team = SelectorGroupChat(
@@ -103,6 +111,7 @@ async def main():
     await Console(
         team.run_stream(task=question)
     )  # Stream the messages to the console.
+
 
 # Run the asynchronous function
 if __name__ == "__main__":

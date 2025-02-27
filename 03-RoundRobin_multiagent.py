@@ -16,7 +16,7 @@ from tool_sample import elmashermoso
 
 load_dotenv()
 
-model_client = AzureOpenAIChatCompletionClient(
+gpt_client = AzureOpenAIChatCompletionClient(
     azure_deployment=os.getenv("model-name"),
     model=os.getenv("model-name"),
     api_version=os.getenv("api-version"),
@@ -25,9 +25,9 @@ model_client = AzureOpenAIChatCompletionClient(
 )
 
 deepseek_client = AzureAIChatCompletionClient(
-    model="DeepSeek-R1-tqlan",
-    endpoint="https://DeepSeek-R1-tqlan.eastus.models.ai.azure.com",
-    credential=AzureKeyCredential("761UNoPpkCaHKDkxSxKpGwBVwO9KMeYt"),
+    model=os.getenv("R1_model"),
+    endpoint=os.getenv("R1_endpoint"),
+    credential=AzureKeyCredential(os.getenv("R1_credential")),
     model_info={
         "json_output": False,
         "function_calling": False,
@@ -44,12 +44,17 @@ deepseekAgent = AssistantAgent(
 
 openaiAgent = AssistantAgent(
     "gpt4oBot",
-    model_client=model_client,
+    model_client=gpt_client,
     system_message="Eres un asistente de inteligencia artificial útil que proporciona comentarios constructivos sobre historias de miedo para adultos para agregar un final inesperado e impactante. Responde con 'APROBADO' cuando se aborden tus comentarios.",
 )
 
 text_termination = TextMentionTermination("APROBADO")
-team = RoundRobinGroupChat([deepseekAgent, openaiAgent], max_turns=50, termination_condition=text_termination)
+
+team = RoundRobinGroupChat(
+    [deepseekAgent, openaiAgent],
+    max_turns=50,
+    termination_condition=text_termination
+)
 
 
 async def main():

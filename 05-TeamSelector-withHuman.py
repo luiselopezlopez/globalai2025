@@ -89,6 +89,7 @@ Story_editor = AssistantAgent(
 )
 
 # Human Interaction
+
 user_proxy = UserProxyAgent("UserProxy", input_func=input)
 
 text_mention_termination = TextMentionTermination("TERMINATE")
@@ -96,7 +97,13 @@ max_messages_termination = MaxMessageTermination(max_messages=100)
 termination = text_mention_termination | max_messages_termination
 
 team = SelectorGroupChat(
-    [planning_agent, Story_writer, Story_reviewer, Story_moral, Story_editor,user_proxy],
+    [
+        planning_agent,
+        Story_writer,
+        Story_reviewer,
+        Story_moral,
+        Story_editor,user_proxy
+    ],
     model_client=az_model_client,
     termination_condition=termination,
 )
