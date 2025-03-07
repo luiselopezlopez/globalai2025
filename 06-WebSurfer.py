@@ -43,3 +43,4 @@ while True:
     task = input ("Por favor, escriba lo que desea (escribe 'exit' para salir):")
     if task == "exit":
         break
+clear

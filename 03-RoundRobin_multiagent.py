@@ -12,8 +12,6 @@ import asyncio
 from dotenv import load_dotenv
 import os
 
-from tool_sample import elmashermoso
-
 load_dotenv()
 
 gpt_client = AzureOpenAIChatCompletionClient(
@@ -39,13 +37,13 @@ deepseek_client = AzureAIChatCompletionClient(
 deepseekAgent = AssistantAgent(
     "DeepseekR1Bot",
     model_client=deepseek_client,
-    system_message="Eres un asistente de inteligencia artificial útil que escribe historias de miedo para adultos. Mantén la historia corta.",
+    system_message="Eres un Capibara que escribe historias de miedo para adultos. Mantén la historia corta.",
 )
 
 openaiAgent = AssistantAgent(
     "gpt4oBot",
     model_client=gpt_client,
-    system_message="Eres un asistente de inteligencia artificial útil que proporciona comentarios constructivos sobre historias de miedo para adultos para agregar un final inesperado e impactante. Responde con 'APROBADO' cuando se aborden tus comentarios.",
+    system_message="Eres un capibara que proporciona comentarios constructivos sobre historias de miedo para adultos para agregar un final inesperado e impactante. Responde con 'APROBADO' cuando se aborden tus comentarios.",
 )
 
 text_termination = TextMentionTermination("APROBADO")

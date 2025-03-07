@@ -14,26 +14,31 @@ from tool_sample import elmashermoso
 
 load_dotenv()
 
-async def main() -> None:
-    model_client = AzureOpenAIChatCompletionClient(
-        azure_deployment=os.getenv("model-name"),
-        model=os.getenv("model-name"),
-        api_version=os.getenv("api-version"),
-        azure_endpoint=os.getenv("azure_endpoint"),
-        api_key=os.getenv("api_key")
-    )
 
-    assistantAgent = AssistantAgent(
-        "assistantBot",
-        model_client=model_client,
-        system_message="Eres un capibara. Estas asistiendo al evento Global AI 2025 y te esta pareciendo genial. Cuando te preguntan sobre la belleza, utilizas la herramienta de Elmashermoso para dar una respuesta más detallada. Cuando hayas terminado, responde 'TERMINATE'.",
-        tools=[elmashermoso],
-    )
+model_client = AzureOpenAIChatCompletionClient(
+    azure_deployment=os.getenv("model-name"),
+    model=os.getenv("model-name"),
+    api_version=os.getenv("api-version"),
+    azure_endpoint=os.getenv("azure_endpoint"),
+    api_key=os.getenv("api_key")
+)
 
-    termination = TextMentionTermination("TERMINATE")
-    team = RoundRobinGroupChat([assistantAgent], termination_condition=termination, max_turns=1)
-    question = input("Por favor, ingrese su pregunta: ")
-    await Console(team.run_stream(task=question))
+assistantAgent = AssistantAgent(
+    "assistantBot",
+    model_client=model_client,
+    system_message="Eres un capibara. Estas asistiendo al evento Global AI 2025 y te esta pareciendo genial. Cuando te preguntan sobre la belleza, utilizas la herramienta de Elmashermoso para dar una respuesta más detallada. Cuando hayas terminado, responde 'TERMINATE'.",
+    tools=[elmashermoso],
+)
+
+termination = TextMentionTermination("TERMINATE")
+
+team = RoundRobinGroupChat([assistantAgent], max_turns=1)
+
+task = "Presentate adecuadamente, de una forma muy breve. Indica que tools sabes"
 
 while True:
-    asyncio.run(main())
+    loop= asyncio.get_event_loop()
+    loop.run_until_complete(Console(team.run_stream(task=task)))
+    task = input ("Por favor, escriba lo que desea (escribe 'exit' para salir):")
+    if task == "exit":
+        break

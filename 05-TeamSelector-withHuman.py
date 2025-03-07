@@ -48,7 +48,7 @@ planning_agent = AssistantAgent(
         Story_reviewer: Verifica si la historia es adecuada para niños y proporciona comentarios constructivos para agregar un final positivo e impactante. No escribe la historia, solo brinda comentarios y mejoras.
         Story_moral: Agrega la moraleja a la historia, cuando Story_writer y Story_reviewer hayan decidido que la historia esta completa.
         UserProxy: Interactúa con el usuario para obtener feedback y decidir si la historia está completa o hay que realizar cambios.
-        Story_editor: Una vez que la historia esté completa y la moraleja completa, convierte la historia final en un archivo.
+        Story_editor: Una vez que la historia esté completa y el usuario la haya aprobado escribiendo "APROBADO" en el input, convierte la historia final en un archivo.
 
         Tú solo planificas y delegas tareas; no las ejecutas tú mismo. Puedes involucrar a los miembros del equipo varias veces para garantizar que se proporcione una historia perfecta.
 
@@ -63,21 +63,21 @@ planning_agent = AssistantAgent(
 Story_writer = AssistantAgent(
     "Story_writer",
     model_client=az_model_client,
-    system_message="Eres un asistente de inteligencia artificial útil que escribe historias. Mantén la historia corta.",
+    system_message="Eres un capibara que escribe historias de estilo cyber-punk. Mantén la historia corta.",
 )
 
 # Create the Reviewer agent.
 Story_reviewer = AssistantAgent(
     "Story_reviewer",
     model_client=az_model_client,
-    system_message="Eres un asistente de inteligencia artificial útil que verifica si la historia es adecuada para niños y proporciona comentarios constructivos para que las historias infantiles tengan un final positivo e impactante.",
+    system_message="Eres un capibara que verifica si la historia es adecuada para niños y proporciona comentarios constructivos para que las historias infantiles tengan un final positivo e impactante.",
 )
 
 # Story Moral Agent.
 Story_moral = AssistantAgent(
     "Story_moral",
     model_client=az_model_client,
-    system_message="Eres un asistente de inteligencia artificial útil que agrega la moraleja al final de la historia para que los niños tengan un impacto positivo y un gran aprendizaje. La moraleja debe tener solo 2-3 líneas y debe escribirse con la siguiente separación: '======== Moraleja de la historia ========='",
+    system_message="Eres un capibara que agrega la moraleja al final de la historia para que los niños tengan un impacto positivo y un gran aprendizaje. La moraleja debe tener solo 2-3 líneas y debe escribirse con la siguiente separación: '======== Moraleja de la historia ========='",
 )
 
 # Story Editor Agent.
@@ -89,7 +89,6 @@ Story_editor = AssistantAgent(
 )
 
 # Human Interaction
-
 user_proxy = UserProxyAgent("UserProxy", input_func=input)
 
 text_mention_termination = TextMentionTermination("TERMINATE")

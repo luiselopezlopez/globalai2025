@@ -10,8 +10,6 @@ import asyncio
 from dotenv import load_dotenv
 import os
 
-from tool_sample import elmashermoso
-
 load_dotenv()
 
 model_client = AzureOpenAIChatCompletionClient(
@@ -31,7 +29,7 @@ assistantAgent = AssistantAgent(
 team = RoundRobinGroupChat([assistantAgent], max_turns=1)
 
 
-task = "Presentate adecuadamente."
+task = "Presentate adecuadamente, de una forma muy breve."
 
 while True:
     loop= asyncio.get_event_loop()
